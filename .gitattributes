@@ -1,0 +1,30 @@
+# 统一换行符，避免 Windows / Linux 协作时的无意义 diff
+* text=auto eol=lf
+
+*.java    text eol=lf
+*.xml     text eol=lf
+*.yml     text eol=lf
+*.yaml    text eol=lf
+*.sql     text eol=lf
+*.md      text eol=lf
+*.js      text eol=lf
+*.vue     text eol=lf
+*.css     text eol=lf
+*.json    text eol=lf
+*.html    text eol=lf
+*.st      text eol=lf
+
+*.cmd     text eol=crlf
+*.bat     text eol=crlf
+*.ps1     text eol=crlf
+mvnw      text eol=lf
+
+*.png     binary
+*.jpg     binary
+*.jpeg    binary
+*.gif     binary
+*.ico     binary
+*.jar     binary
+
+# 截图目录不做语言统计噪声
+screenshots/** linguist-documentation

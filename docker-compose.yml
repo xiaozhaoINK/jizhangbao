@@ -1,0 +1,52 @@
+# 记账宝 · 本地依赖（MySQL + Redis）
+#
+#   docker compose up -d        启动
+#   docker compose ps           查看状态
+#   docker compose down         停止（数据保留在 volume 中）
+#   docker compose down -v      停止并清空数据
+#
+# 说明：表结构由后端启动时自动执行 server/src/main/resources/db/schema.sql，
+#      这里只负责把数据库和缓存拉起来。
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: jizhangbao-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-603605}
+      MYSQL_DATABASE: ${MYSQL_DB:-jizhangbao}
+      TZ: Asia/Shanghai
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --default-time-zone=+08:00
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-p${MYSQL_ROOT_PASSWORD:-603605}"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+  redis:
+    image: redis:7-alpine
+    container_name: jizhangbao-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  mysql-data:
+  redis-data:
