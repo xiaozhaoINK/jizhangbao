@@ -1,0 +1,29 @@
+# 大模型模式：真实接入 OpenAI 兼容协议的大模型（DeepSeek / 通义千问 / OpenAI / 本地 vLLM 均可）
+#
+# 使用方式：
+#   export OPENAI_API_KEY=sk-xxxxxxxx
+#   export OPENAI_BASE_URL=https://api.deepseek.com          # 或 https://dashscope.aliyuncs.com/compatible-mode
+#   export OPENAI_MODEL=deepseek-chat
+#   java -jar jizhangbao-server.jar --spring.profiles.active=llm
+spring:
+  ai:
+    model:
+      chat: openai
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      base-url: ${OPENAI_BASE_URL:https://api.deepseek.com}
+      chat:
+        options:
+          model: ${OPENAI_MODEL:deepseek-chat}
+          temperature: 0.4
+          max-tokens: 2048
+
+jizhangbao:
+  ai:
+    mode: llm
+    model: ${OPENAI_MODEL:deepseek-chat}
+    provider: ${AI_PROVIDER:deepseek}
+
+logging:
+  level:
+    org.springframework.ai: DEBUG

@@ -1,0 +1,22 @@
+# 开发环境：彩色日志 + SQL 打印 + 宽松的接口文档
+spring:
+  sql:
+    init:
+      mode: always
+  ai:
+    model:
+      chat: none
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+logging:
+  level:
+    com.jizhangbao: DEBUG
+
+jizhangbao:
+  ai:
+    mode: rule
+  demo:
+    enabled: true
