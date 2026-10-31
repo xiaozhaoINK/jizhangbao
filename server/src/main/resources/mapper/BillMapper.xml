@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jizhangbao.module.bill.mapper.BillMapper">
+
+    <!-- 分类聚合列：parent = 按一级分类聚合，child = 按二级分类聚合 -->
+    <sql id="categoryColumn">
+        <choose>
+            <when test="level == 'parent'">b.parent_category_id</when>
+            <otherwise>b.category_id</otherwise>
+        </choose>
+    </sql>
+
+    <select id="sumByDay" resultType="java.util.Map">
+        SELECT b.bill_date AS day,
+               COALESCE(SUM(CASE WHEN b.type = 'INCOME' THEN b.amount ELSE 0 END), 0) AS income,
+               COALESCE(SUM(CASE WHEN b.type = 'EXPENSE' THEN b.amount ELSE 0 END), 0) AS expense
+        FROM t_bill b
+        WHERE b.user_id = #{userId}
+          AND b.deleted = 0
+          AND b.bill_date BETWEEN #{start} AND #{end}
+        <if test="type != null and type != ''">
+            AND b.type = #{type}
+        </if>
+        GROUP BY b.bill_date
+        ORDER BY b.bill_date
+    </select>
+
+    <select id="sumByMonth" resultType="java.util.Map">
+        SELECT DATE_FORMAT(b.bill_date, '%Y-%m') AS month,
+               COALESCE(SUM(CASE WHEN b.type = 'INCOME' THEN b.amount ELSE 0 END), 0) AS income,
+               COALESCE(SUM(CASE WHEN b.type = 'EXPENSE' THEN b.amount ELSE 0 END), 0) AS expense
+        FROM t_bill b
+        WHERE b.user_id = #{userId}
+          AND b.deleted = 0
+          AND DATE_FORMAT(b.bill_date, '%Y-%m') BETWEEN #{startMonth} AND #{endMonth}
+        GROUP BY DATE_FORMAT(b.bill_date, '%Y-%m')
+        ORDER BY month
+    </select>
+
+    <select id="sumByCategory" resultType="java.util.Map">
+        SELECT <include refid="categoryColumn"/> AS categoryId,
+               COALESCE(c.name, '未分类') AS categoryName,
+               COALESCE(c.icon, 'other') AS icon,
+               COALESCE(c.color, '#8C8C8C') AS color,
+               COALESCE(SUM(b.amount), 0) AS amount,
+               COUNT(*) AS cnt
+        FROM t_bill b
+        LEFT JOIN t_category c ON c.id = <include refid="categoryColumn"/>
+        WHERE b.user_id = #{userId}
+          AND b.deleted = 0
+          AND b.type = #{type}
+          AND b.bill_date BETWEEN #{start} AND #{end}
+        GROUP BY <include refid="categoryColumn"/>, c.name, c.icon, c.color
+        ORDER BY amount DESC
+    </select>
+
+    <select id="sumRange" resultType="java.util.Map">
+        SELECT COALESCE(SUM(CASE WHEN b.type = 'INCOME' THEN b.amount ELSE 0 END), 0) AS income,
+               COALESCE(SUM(CASE WHEN b.type = 'EXPENSE' THEN b.amount ELSE 0 END), 0) AS expense,
+               COUNT(*) AS cnt
+        FROM t_bill b
+        WHERE b.user_id = #{userId}
+          AND b.deleted = 0
+          AND b.bill_date BETWEEN #{start} AND #{end}
+    </select>
+
+</mapper>
