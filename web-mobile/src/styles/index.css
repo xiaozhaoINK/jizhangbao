@@ -1,0 +1,127 @@
+:root {
+  --jzb-primary: #4f6ef7;
+  --jzb-primary-light: #7c5cff;
+  --jzb-income: #00b578;
+  --jzb-expense: #ff5b5b;
+  --jzb-warning: #ff9f0a;
+  --jzb-bg: #f5f7fb;
+  --jzb-text: #1f2d5a;
+  --jzb-text-weak: #8b95b3;
+  --jzb-radius: 14px;
+  --jzb-shadow: 0 2px 12px rgba(31, 45, 90, 0.06);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--jzb-bg);
+  color: var(--jzb-text);
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue',
+    'Microsoft YaHei', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+#app {
+  min-height: 100vh;
+  max-width: 560px;
+  margin: 0 auto;
+  background: var(--jzb-bg);
+  position: relative;
+}
+
+.page {
+  padding-bottom: calc(66px + env(safe-area-inset-bottom));
+  min-height: 100vh;
+}
+
+.page--plain {
+  padding-bottom: 24px;
+}
+
+.card {
+  background: #fff;
+  border-radius: var(--jzb-radius);
+  box-shadow: var(--jzb-shadow);
+  padding: 16px;
+  margin: 12px 14px;
+}
+
+.card__title {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card__title .more {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--jzb-text-weak);
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
+.text-income {
+  color: var(--jzb-income);
+}
+
+.text-expense {
+  color: var(--jzb-expense);
+}
+
+.text-weak {
+  color: var(--jzb-text-weak);
+}
+
+.center {
+  text-align: center;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.row--between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.van-tabbar {
+  max-width: 560px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.van-hairline--top-bottom::after,
+.van-hairline-unset--top-bottom::after {
+  border-width: 0;
+}
+
+/* Vant 主题色覆盖 */
+:root:root {
+  --van-primary-color: #4f6ef7;
+  --van-tabbar-item-active-color: #4f6ef7;
+  --van-tabs-bottom-bar-color: #4f6ef7;
+  --van-button-primary-background: #4f6ef7;
+  --van-button-primary-border-color: #4f6ef7;
+  --van-nav-bar-title-font-size: 16px;
+  --van-cell-group-inset-radius: 14px;
+}
