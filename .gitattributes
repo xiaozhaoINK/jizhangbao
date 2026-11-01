@@ -28,3 +28,6 @@ mvnw      text eol=lf
 
 # 截图目录不做语言统计噪声
 screenshots/** linguist-documentation
+
+# 提示词模板（*.st）不要被 GitHub 误识别成 Smalltalk
+server/src/main/resources/prompts/*.st linguist-detectable=false
